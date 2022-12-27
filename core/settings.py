@@ -25,7 +25,11 @@ INSTALLED_APPS = [
 	"allauth",
 	"allauth.account",
 	"allauth.socialaccount",
-	"allauth.socialaccount.providers"
+	"allauth.socialaccount.providers.github",
+	"django_extensions",
+
+	"chat",
+	"page",
 ]
 
 MIDDLEWARE = [
@@ -39,13 +43,14 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-	'DEFAULT_PERMISSION_CLASSES': [
-		'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-		'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-	],
+	# 'DEFAULT_PERMISSION_CLASSES': [
+	# 	'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+	# 	'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+	# ],
 	'DEFAULT_AUTHENTICATION_CLASSES': (
 		'rest_framework.authentication.SessionAuthentication',
 		'rest_framework.authentication.TokenAuthentication',
+		'rest_framework.authentication.BasicAuthentication',
 		'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
 	),
 	'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.openapi.AutoSchema'
@@ -63,8 +68,8 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_EMAIL_REQUIRED = False
 
 SWAGGER_SETTINGS = {
-	"LOGIN_URL": "login",
-	"LOGOUT_URL": "logout"
+	# "LOGIN_URL": "login",
+	# "LOGOUT_URL": "logout",
 }
 
 ROOT_URLCONF = "core.urls"
