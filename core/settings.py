@@ -4,7 +4,7 @@ from os import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS', ['localhost', '127.0.0.1', '::1'])
-SECRET_KEY = environ.get('SECRET_KEY')
+SECRET_KEY = str(environ.get('SECRET_KEY'))
 DEBUG = environ.get('DEBUG', 1)
 
 INSTALLED_APPS = [
@@ -14,9 +14,18 @@ INSTALLED_APPS = [
 	"django.contrib.sessions",
 	"django.contrib.messages",
 	"django.contrib.staticfiles",
+	"django.contrib.sites",
 
 	"rest_framework",
+	"rest_framework.authtoken",
 	"rest_framework_simplejwt",
+	"drf_yasg",
+	"dj_rest_auth",
+	"dj_rest_auth.registration",
+	"allauth",
+	"allauth.account",
+	"allauth.socialaccount",
+	"allauth.socialaccount.providers"
 ]
 
 MIDDLEWARE = [
@@ -29,16 +38,34 @@ MIDDLEWARE = [
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# REST_FRAMEWORK = {
-# 	'DEFAULT_PERMISSION_CLASSES': [
-# 		'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-# 		'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-# 	],
-# 	'DEFAULT_AUTHENTICATION_CLASSES': (
-# 		'rest_framework.authentication.SessionAuthentication',
-# 		'rest_framework_simplejwt.authentication.JWTAuthentication',
-# 	)
-# }
+REST_FRAMEWORK = {
+	'DEFAULT_PERMISSION_CLASSES': [
+		'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+		'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+	],
+	'DEFAULT_AUTHENTICATION_CLASSES': (
+		'rest_framework.authentication.SessionAuthentication',
+		'rest_framework.authentication.TokenAuthentication',
+		'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+	),
+	'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.openapi.AutoSchema'
+}
+
+REST_SESSION_LOGIN = True
+
+JWT_AUTH_COOOKIE = 'auth'
+REST_USE_JWT = True
+
+SITE_ID = 1
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_EMAIL_REQUIRED = False
+
+SWAGGER_SETTINGS = {
+	"LOGIN_URL": "login",
+	"LOGOUT_URL": "logout"
+}
 
 ROOT_URLCONF = "core.urls"
 
