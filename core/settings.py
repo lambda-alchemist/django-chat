@@ -26,6 +26,7 @@ INSTALLED_APPS = [
 	"allauth.account",
 	"allauth.socialaccount",
 	"allauth.socialaccount.providers.github",
+	"django_htmx",
 	"django_extensions",
 
 	"chat",
@@ -40,6 +41,7 @@ MIDDLEWARE = [
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
 	"django.contrib.messages.middleware.MessageMiddleware",
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
+	"django_htmx.middleware.HtmxMiddleware",
 ]
 
 REST_FRAMEWORK = {
@@ -112,4 +114,5 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

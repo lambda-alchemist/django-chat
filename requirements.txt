@@ -9,7 +9,10 @@ defusedxml==0.7.1
 dj-rest-auth==2.2.5
 Django==4.1.4
 django-allauth==0.50.0
+django-browser-reload==1.6.0
 django-extensions==3.2.1
+django-htmx==1.13.0
+django-tailwind==3.4.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 drf-yasg==1.21.4
