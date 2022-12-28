@@ -6,10 +6,11 @@ from dj_rest_auth.registration.views import SocialLoginView
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
-from chat.models import ChatMessage
+from chat.models import Message
 from chat.serial import MessageSerial
 
 callback_url = 'localhost:8000/auth/login'
@@ -24,21 +25,37 @@ class GithubConnect(SocialConnectView):
     client_class = OAuth2Client
     callback_url = callback_url
 
-# class MessageViewSet(ModelViewSet):
-# 	queryset = ChatMessage.objects.all()
-# 	serializer_class = MessageSerial
+class MessageViewSet(ModelViewSet):
+	queryset = Message.objects.all()
+	serializer_class = MessageSerial
+	permission_classes = [IsAuthenticated]
 
-# 	def create(self, request, *args, **kwargs):
-# 		try:
-# 			msg = super().create(self, request, *args, **kwargs)
-# 			instance = ChatMessage.objects.get()
-# 			return Response(
-# 				status = HTTP_201_CREATED,
-# 				data = MessageSerial(instance=instance, many=False)
-# 			)
-# 		except:
-# 			return Response(
-# 				status = HTTP_400_BAD_REQUEST
-# 				data = {"ERR: Bad Request"}
-# 			)
+	def create(self, request, *args, **kwargs):
+		try:
+			msg = super().create(self, request, *args, **kwargs)
+			instance = Message.objects.get(id=msg.data.get('id'))
+			return Response(
+				status = HTTP_201_CREATED,
+				data = MessageSerial(instance=instance, many=False)
+			)
+		except:
+			return Response(
+				status = HTTP_400_BAD_REQUEST,
+				data = {"ERR: Bad Request"}
+			)
+
+	def retrive(self, request, *args, **kwargs):
+		try:
+			msg = super().retrieve(request, *args, **kwargs)
+			instance = Message.objects.get(id=msg.data.get('id'))
+			return Response(
+				status = HTTP_200_OK,
+				data = MessageSerial(instance=instance, many=False)
+			)
+		except:
+			return Response(
+				status = HTTP_400_BAD_REQUEST,
+				data = {"ERR: Bad Request"}
+			)
+
 
