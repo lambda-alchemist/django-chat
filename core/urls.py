@@ -5,8 +5,8 @@ from drf_yasg.openapi import Info, Contact, License
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.routers import DefaultRouter
 
-from chat.views import MessageViewSet
-# from page.views import PageViewSet
+from chat.views import MessageViewSet, HTMXMessageView
+# from page.views import HTMXPageView
 
 schema_view = get_schema_view(
 	info = Info(
@@ -21,15 +21,17 @@ schema_view = get_schema_view(
 )
 
 router = DefaultRouter()
-router.register('chat', MessageViewSet, 'chat-messages')
-# router.register('page', PageViewSet, 'page')
-
+router.register('pub/chat', MessageViewSet, basename='chat-messages')
 
 urlpatterns = [
 	path('', include(router.urls)),
 	path('admin/', admin.site.urls),
+
+	path('hx/chat', HTMXMessageView.as_view(), name='htmx-chat'),
+
 	path('auth/', include('dj_rest_auth.urls')),
 	path('auth/signup/', include('dj_rest_auth.registration.urls')),
+
 	re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
 	re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 	re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

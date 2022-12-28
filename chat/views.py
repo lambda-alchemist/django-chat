@@ -29,13 +29,13 @@ class GithubConnect(SocialConnectView):
 class MessageViewSet(ModelViewSet):
 	queryset = Message.objects.all()
 	serializer_class = MessageSerial
-	permission_classes = [IsAuthenticated]
+	permission_classes = [IsAuthenticatedOrReadOnly]
 
 	def create(self, request, *args, **kwargs):
 		try:
 			instance = Message.objects.get(
 				id = super().create(self, request, *args, **kwargs).data.get('id'))
-			instance.text = self.request.
+			# instance.text = self.request.
 			instance.user.pk = self.request.user.pk
 			instance.save()
 			return Response(
@@ -64,14 +64,41 @@ class MessageViewSet(ModelViewSet):
 
 	def list(self, request, *args, **kwargs):
 		try:
-			msg =  super().list(request, *args, **kwargs)
 			instance = Message.objects.filter(created_at__gt=now() - timedelta(days=1))
 			return Response(
 				status = HTTP_200_OK,
-				data = MessageSerial(instance=instance, many=False)
+				data = MessageSerial(instance, many=True).data
 			)
 		except:
 			return Response(
 				status = HTTP_400_BAD_REQUEST,
 				data = {"ERR: Bad Request"}
 			)
+
+class HTMXMessageView(APIView):
+	queryset = Message.objects.all()
+	serializer_class = MessageSerial
+	permission_classes = [IsAuthenticated]
+
+	def get(self, request, *args, **kwargs):
+		if self.request.GET.get('id'):
+			instance = Message.objects.get(id=self.request.GET.get('id'))
+		else:
+			instance = Message.objects.filter(created_at__gte=now() - timedelta(days=1))
+		serial = MessageSerial( instance, many = True )
+		return Response(
+			status = HTTP_200_OK,
+			data = serial,
+		)
+
+	# def put(self, request, *args, **kwargs):
+	# 	return Response()
+
+	# def post(self, request, *args, **kwargs):
+	# 	return Response()
+
+	# def patch(self, request, *args, **kwargs):
+	# 	return Response()
+
+	# def delete(self, request, *args, **kwargs):
+	# 	return Response()

@@ -9,3 +9,8 @@ class Message(Model):
 	text = TextField(max_length=127)
 	created_at = DateTimeField(auto_now_add=True)
 	updated_at = DateTimeField(auto_now=True)
+	def __str__(self):
+		user = self.user.username
+		date = str(self.created_at)[:10]
+		time = str(self.created_at)[11:19]
+		return f"{user}, on {date}, at {time}"
