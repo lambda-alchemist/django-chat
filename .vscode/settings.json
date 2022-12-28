@@ -20,6 +20,7 @@
 	"editor.fontLigatures": true,
 	"editor.cursorStyle": "line",
 	"editor.maxTokenizationLineLength": 50000,
+	"editor.quickSuggestions": { "strings": true },
 	"files.autoSave": "afterDelay",
 	"files.autoSaveDelay": 1,
 	"files.eol": "\n",
@@ -28,6 +29,7 @@
 	"files.insertFinalNewline": true,
 	"files.trimTrailingWhitespace": true,
 	"files.trimFinalNewlines": false,
+	"files.associations": { "*.css": "tailwindcss" },
 	"explorer.confirmDelete": false,
 	"explorer.confirmDragAndDrop": false,
 	"explorer.confirmUndo": "default",
@@ -92,7 +94,5 @@
 	"[typescript]":      { "editor.defaultFormatter": "denoland.vscode-deno" },
 	"[javascript]":      { "editor.defaultFormatter": "denoland.vscode-deno" },
 	"[typescriptreact]": { "editor.defaultFormatter": "denoland.vscode-deno" },
-	"[javascriptreact]": {
-		"editor.defaultFormatter": "denoland.vscode-deno"
-	},
+	"[javascriptreact]": { "editor.defaultFormatter": "denoland.vscode-deno" },
 }

@@ -4,6 +4,7 @@ from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialConnectView
 from dj_rest_auth.registration.views import SocialLoginView
 from django.contrib.auth.models import User
+from django.utils.timezone import timedelta, now
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
@@ -32,8 +33,11 @@ class MessageViewSet(ModelViewSet):
 
 	def create(self, request, *args, **kwargs):
 		try:
-			msg = super().create(self, request, *args, **kwargs)
-			instance = Message.objects.get(id=msg.data.get('id'))
+			instance = Message.objects.get(
+				id = super().create(self, request, *args, **kwargs).data.get('id'))
+			instance.text = self.request.
+			instance.user.pk = self.request.user.pk
+			instance.save()
 			return Response(
 				status = HTTP_201_CREATED,
 				data = MessageSerial(instance=instance, many=False)
@@ -58,4 +62,16 @@ class MessageViewSet(ModelViewSet):
 				data = {"ERR: Bad Request"}
 			)
 
-
+	def list(self, request, *args, **kwargs):
+		try:
+			msg =  super().list(request, *args, **kwargs)
+			instance = Message.objects.filter(created_at__gt=now() - timedelta(days=1))
+			return Response(
+				status = HTTP_200_OK,
+				data = MessageSerial(instance=instance, many=False)
+			)
+		except:
+			return Response(
+				status = HTTP_400_BAD_REQUEST,
+				data = {"ERR: Bad Request"}
+			)

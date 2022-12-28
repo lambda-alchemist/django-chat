@@ -5,7 +5,7 @@ from drf_yasg.openapi import Info, Contact, License
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.routers import DefaultRouter
 
-# from chat.views import MessageViewSet
+from chat.views import MessageViewSet
 # from page.views import PageViewSet
 
 schema_view = get_schema_view(
@@ -21,7 +21,7 @@ schema_view = get_schema_view(
 )
 
 router = DefaultRouter()
-# router.register('chat', MessageViewSet, 'messages')
+router.register('chat', MessageViewSet, 'chat-messages')
 # router.register('page', PageViewSet, 'page')
 
 
