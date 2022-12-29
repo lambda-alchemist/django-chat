@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<main>
+	{% lorem %}
+	<br>
+	<button
+		hx-get="/hx/get-user-recent"
+		hx-trigger="click"
+		hx-target="#replace">
+		Click ME!
+	</button>
+	<br>
+	<div id="replace">
+	</div>
+	<br>
+	{% lorem %}
+</main>
+{% endblock content %}

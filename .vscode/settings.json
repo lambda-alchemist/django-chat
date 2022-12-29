@@ -40,9 +40,9 @@
 	"explorer.fileNesting.enabled": false,
 	"explorer.fileNesting.expand": false,
 	"explorer.fileNesting.patterns": {
-		"Cargo.toml": "Cargo.lock",
-		"deno.jsonc": "deno.lock",
 		"deno.json": "deno.lock",
+		"deno.jsonc": "deno.lock",
+		"Cargo.toml": "Cargo.lock",
 	},
 	"workbench.startupEditor": "none",
 	"workbench.preferredDarkColorTheme": "Default Dark+",
