@@ -30,7 +30,6 @@ INSTALLED_APPS = [
 	"django_extensions",
 
 	"chat",
-	"page",
 ]
 
 MIDDLEWARE = [
@@ -70,8 +69,8 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_EMAIL_REQUIRED = False
 
 SWAGGER_SETTINGS = {
-	# "LOGIN_URL": "login",
-	# "LOGOUT_URL": "logout",
+	'LOGIN_URL': 'drf/login',
+	'LOGOUT_URL': 'drf/logout',
 }
 
 ROOT_URLCONF = "core.urls"
