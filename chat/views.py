@@ -13,8 +13,13 @@ from rest_framework.status import (
 from django.utils.timezone import now, timedelta
 from django.urls import reverse_lazy
 
-from chat.models import Message, Group
-from chat.serial import MessageSerial, GroupSerial
+from chat.serial import (
+	MessageSerial, GroupSerial,
+	ProfileSerial, ReelSerial, )
+
+from chat.models import (
+	Message, Group,
+	Profile, Reel )
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
@@ -59,6 +64,7 @@ class MessageView(ModelViewSet):
 
 	@handle_status_500
 	def list(self, request, *args, **kwargs):
+		import pdb; pdb.set_trace()
 		instance = Message.objects.filter(created_at__gt=now() - timedelta(days=1))
 		return Response(
 			status = HTTP_200_OK,
@@ -68,8 +74,14 @@ class MessageView(ModelViewSet):
 class GroupView(ModelViewSet):
 	queryset = Group.objects.all()
 	serializer_class = GroupSerial
+	permission_classes = [IsAuthenticated]
+
+class ProfileView(ModelViewSet):
+	queryset = Profile.objects.all()
+	serializer_class = ProfileSerial
 	permission_classes = [IsAuthenticatedOrReadOnly]
 
-	@handle_status_500
-	def create(self, request, *args, **kwargs):
-		return super().create(request, *args, **kwargs)
+class ReelView(ModelViewSet):
+	queryset = Reel.objects.all()
+	serializer_class = ReelSerial
+	permission_classes = [IsAuthenticated]

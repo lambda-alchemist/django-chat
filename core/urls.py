@@ -6,6 +6,10 @@ from drf_yasg.views import get_schema_view
 from django.contrib import admin
 from django.urls import path, re_path, include
 
+from chat.views import (
+	MessageView, GroupView,
+	ProfileView, ReelView,
+)
 schema_view = get_schema_view(
 	info = Info(
 		title="Django Open Chat API",
@@ -19,6 +23,12 @@ schema_view = get_schema_view(
 )
 
 router = DefaultRouter()
+router.register('api/chat/message', MessageView)
+router.register('api/chat/group', GroupView)
+router.register('api/chat/profile', ProfileView)
+router.register('api/chat/reel', ReelView)
+# router.register('', View)
+# router.register('', View)
 
 urlpatterns = [
 	path('', include(router.urls)),
