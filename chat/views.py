@@ -50,7 +50,7 @@ class MessageView(ModelViewSet):
 		instance.save()
 		return Response(
 			status = HTTP_201_CREATED,
-			data = MessageSerial(instance=instance, many=False)
+			data = MessageSerial(instance=instance, many=False).data
 		)
 
 	@handle_status_500
@@ -59,7 +59,7 @@ class MessageView(ModelViewSet):
 		instance = Message.objects.get(id=msg.data.get('id'))
 		return Response(
 			status = HTTP_200_OK,
-			data = MessageSerial(instance=instance, many=False)
+			data = MessageSerial(instance=instance, many=False).data
 		)
 
 	@handle_status_500
