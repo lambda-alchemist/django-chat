@@ -13,7 +13,7 @@ from rest_framework.status import (
 from django.utils.timezone import now, timedelta
 from django.urls import reverse_lazy
 
-from chat.models import Message, Group, User
+from chat.models import Message, Group
 from chat.serial import MessageSerial, GroupSerial
 
 class GoogleLogin(SocialLoginView):
@@ -26,56 +26,50 @@ class GithubConnect(SocialConnectView):
     client_class = OAuth2Client
     callback_url = reverse_lazy('index')
 
+def handle_status_500(func):
+	try:
+		func()
+	except:
+		return Response(status=HTTP_500_INTERNAL_SERVER_ERROR,data={"error": "An internal server error has ocurred"})
+
 class MessageView(ModelViewSet):
 	queryset = Message.objects.filter()
 	serializer_class = MessageSerial
 	permission_classes = [IsAuthenticatedOrReadOnly]
 
+	@handle_status_500
 	def create(self, request, *args, **kwargs):
-		try:
-			msg = super().create(self, request, *args, **kwargs)
-			instance = Message.objects.get(id = msg.data.get('id'))
-			instance.sender.pk = self.request.user.pk
-			instance.save()
-			return Response(
-				status = HTTP_201_CREATED,
-				data = MessageSerial(instance=instance, many=False)
-			)
-		except:
-			return Response(
-				status = HTTP_500_INTERNAL_SERVER_ERROR,
-				data = {"ERR: 500"}
-			)
+		msg = super().create(self, request, *args, **kwargs)
+		instance = Message.objects.get(id = msg.data.get('id'))
+		instance.sender.pk = self.request.user.pk
+		instance.save()
+		return Response(
+			status = HTTP_201_CREATED,
+			data = MessageSerial(instance=instance, many=False)
+		)
 
+	@handle_status_500
 	def retrive(self, request, *args, **kwargs):
-		try:
-			msg = super().retrieve(request, *args, **kwargs)
-			instance = Message.objects.get(id=msg.data.get('id'))
-			return Response(
-				status = HTTP_200_OK,
-				data = MessageSerial(instance=instance, many=False)
-			)
-		except:
-			return Response(
-				status = HTTP_500_INTERNAL_SERVER_ERROR,
-				data = {"ERR: 500"}
-			)
+		msg = super().retrieve(request, *args, **kwargs)
+		instance = Message.objects.get(id=msg.data.get('id'))
+		return Response(
+			status = HTTP_200_OK,
+			data = MessageSerial(instance=instance, many=False)
+		)
 
+	@handle_status_500
 	def list(self, request, *args, **kwargs):
-		try:
-			instance = Message.objects.filter(created_at__gt=now() - timedelta(days=1))
-			return Response(
-				status = HTTP_200_OK,
-				data = MessageSerial(instance, many=True).data
-			)
-		except:
-			return Response(
-				status = HTTP_500_INTERNAL_SERVER_ERROR,
-				data = {"ERR: Bad Request"}
-			)
+		instance = Message.objects.filter(created_at__gt=now() - timedelta(days=1))
+		return Response(
+			status = HTTP_200_OK,
+			data = MessageSerial(instance, many=True).data
+		)
 
 class GroupView(ModelViewSet):
 	queryset = Group.objects.all()
 	serializer_class = GroupSerial
-	permission_classes = [IsAuthenticated]
+	permission_classes = [IsAuthenticatedOrReadOnly]
 
+	@handle_status_500
+	def create(self, request, *args, **kwargs):
+		return super().create(request, *args, **kwargs)

@@ -39,23 +39,22 @@ MIDDLEWARE = [
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
 	"django.contrib.messages.middleware.MessageMiddleware",
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
-	"django_htmx.middleware.HtmxMiddleware",
 ]
 
 REST_FRAMEWORK = {
-	# 'DEFAULT_PERMISSION_CLASSES': [
-	# 	'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-	# 	'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-	# ],
+	'DEFAULT_PERMISSION_CLASSES': [
+		'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+		'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+	],
 	'DEFAULT_AUTHENTICATION_CLASSES': (
 		'rest_framework.authentication.SessionAuthentication',
 		'rest_framework.authentication.TokenAuthentication',
 		'rest_framework.authentication.BasicAuthentication',
-		'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+		'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
 	),
 	'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.openapi.AutoSchema'
 }
-AUTH_USER_MODEL = 'chat.User'
+
 REST_SESSION_LOGIN = True
 JWT_AUTH_COOOKIE = 'auth'
 REST_USE_JWT = True
