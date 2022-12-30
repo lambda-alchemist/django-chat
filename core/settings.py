@@ -26,7 +26,6 @@ INSTALLED_APPS = [
 	"allauth.account",
 	"allauth.socialaccount",
 	"allauth.socialaccount.providers.github",
-	"django_htmx",
 	"django_extensions",
 
 	"chat",
@@ -56,9 +55,8 @@ REST_FRAMEWORK = {
 	),
 	'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.openapi.AutoSchema'
 }
-
+AUTH_USER_MODEL = 'chat.User'
 REST_SESSION_LOGIN = True
-
 JWT_AUTH_COOOKIE = 'auth'
 REST_USE_JWT = True
 
