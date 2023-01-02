@@ -7,8 +7,15 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 
 from chat.views import (
-	MessageView, GroupView,
-	ProfileView, ReelView,
+	ProfileView,
+	ProfilePictureView,
+	GroupView,
+	GroupPictureView,
+	MessageView,
+	PostView,
+	PostPictureView,
+	ReelView,
+	ReelPictureView
 )
 schema_view = get_schema_view(
 	info = Info(
@@ -24,16 +31,23 @@ schema_view = get_schema_view(
 
 router = DefaultRouter()
 router.register('api/chat/message', MessageView)
-router.register('api/chat/group', GroupView)
 router.register('api/chat/profile', ProfileView)
+router.register('api/chat/group', GroupView)
+router.register('api/chat/post', PostView)
 router.register('api/chat/reel', ReelView)
-# router.register('', View)
-# router.register('', View)
+
 
 urlpatterns = [
 	path('', include(router.urls)),
-	path('auth/', include('dj_rest_auth.urls'), name='base-auth'),
-	path('auth/signup/', include('dj_rest_auth.registration.urls'), name='base-auth-signup')
+	path('api/auth/', include('dj_rest_auth.urls')),
+	path('api/auth/signup/', include('dj_rest_auth.registration.urls'))
+]
+
+urlpatterns += [
+	re_path(r'api/chat/profile/(?P<pk>\d+)/picture', ProfilePictureView.as_view(), name='profile-picture'),
+	re_path(r'api/chat/group/(?P<pk>\d+)/picture', GroupPictureView.as_view(), name='group-picture'),
+	re_path(r'api/chat/post/(?P<pk>\d+)/picture', PostPictureView.as_view(), name='post-picture'),
+	re_path(r'api/chat/reel/(?P<pk>\d+)/picture', ReelPictureView.as_view(), name='reel-picture'),
 ]
 
 urlpatterns += [
