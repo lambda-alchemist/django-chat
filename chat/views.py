@@ -63,7 +63,7 @@ class MessageView(ModelViewSet):
 	def create(self, request, *args, **kwargs):
 		msg = super().create(self, request, *args, **kwargs)
 		instance = Message.objects.get(id = msg.data.get('id'))
-		instance.sender.pk = self.request.user.pk
+		instance.user.pk = self.request.user.pk
 		instance.save()
 		return Response(
 			status = HTTP_201_CREATED,
