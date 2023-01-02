@@ -7,16 +7,17 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 
 from chat.views import (
-	ProfileView,
-	ProfilePictureView,
-	GroupView,
-	GroupPictureView,
 	MessageView,
+	ProfileView,
+	GroupView,
 	PostView,
-	PostPictureView,
 	ReelView,
+	ProfilePictureView,
+	GroupPictureView,
+	PostPictureView,
 	ReelPictureView
 )
+
 schema_view = get_schema_view(
 	info = Info(
 		title="Django Open Chat API",
@@ -36,11 +37,10 @@ router.register('api/chat/group', GroupView)
 router.register('api/chat/post', PostView)
 router.register('api/chat/reel', ReelView)
 
-
 urlpatterns = [
 	path('', include(router.urls)),
 	path('api/auth/', include('dj_rest_auth.urls')),
-	path('api/auth/signup/', include('dj_rest_auth.registration.urls'))
+	path('api/auth/signup/', include('dj_rest_auth.registration.urls')),
 ]
 
 urlpatterns += [

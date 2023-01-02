@@ -52,7 +52,8 @@ REST_FRAMEWORK = {
 		'rest_framework.authentication.BasicAuthentication',
 		'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
 	),
-	'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.openapi.AutoSchema'
+	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+	'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.openapi.AutoSchema',
 }
 
 REST_SESSION_LOGIN = True

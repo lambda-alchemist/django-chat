@@ -45,8 +45,8 @@ class Membership(Model):
 
 class Message(Model):
 	user = ForeignKey(User, on_delete=CASCADE, related_name='sent_messages')
-	reciever = ForeignKey(User, null=True,on_delete=DO_NOTHING, related_name='recieved_messages')
-	group = ForeignKey('chat.Group', null=True, on_delete=CASCADE)
+	reciever = ForeignKey(User, null=True, blank=True, on_delete=DO_NOTHING, related_name='recieved_messages')
+	group = ForeignKey(Group, null=True, blank=True, on_delete=CASCADE)
 	text = TextField(max_length=8192)
 	created_at = DateTimeField(auto_now_add=True)
 	updated_at = DateTimeField(auto_now=True)
@@ -73,7 +73,7 @@ class Post(Model):
 class Reel(Model):
 	user = ForeignKey(User, on_delete=CASCADE)
 	caption = TextField(max_length=128)
-	image = ImageField(upload_to='media/reels/', null=True)
+	picture = ImageField(upload_to='media/reels/', null=True)
 	created_at = DateTimeField(auto_now_add=True)
 
 	def __str__(self):
