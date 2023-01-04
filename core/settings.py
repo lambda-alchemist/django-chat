@@ -67,8 +67,8 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_EMAIL_REQUIRED = False
 
 SWAGGER_SETTINGS = {
-	'LOGIN_URL': 'drf/login',
-	'LOGOUT_URL': 'drf/logout',
+	'LOGIN_URL': 'rest/login',
+	'LOGOUT_URL': 'rest/logout',
 }
 
 ROOT_URLCONF = "core.urls"
