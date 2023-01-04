@@ -1,5 +1,5 @@
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.routers import DefaultRouter
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.routers import DefaultRouter, SimpleRouter, BaseRouter
 from drf_yasg.openapi import Info, Contact, License
 from drf_yasg.views import get_schema_view
 
@@ -26,13 +26,12 @@ schema_view = get_schema_view(
 )
 
 router = DefaultRouter()
+
 router.register('message', MessageView)
 router.register('profile', ProfileView)
 router.register('group', GroupView)
 router.register('post', PostView)
 router.register('reel', ReelView)
 
-urlpatterns = [
-	path('', include(router.urls)),
-]
+urlpatterns = [path('', include(router.urls))]
 

@@ -7,10 +7,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.status import (
-	HTTP_500_INTERNAL_SERVER_ERROR,
-	HTTP_400_BAD_REQUEST,
 	HTTP_201_CREATED,
-	HTTP_200_OK,
 )
 from django.urls import reverse_lazy
 
@@ -57,20 +54,12 @@ class MessageView(ModelViewSet):
 	permission_classes = [IsAuthenticatedOrReadOnly]
 
 	def create(self, request, *args, **kwargs):
-		msg = super().create(self, request, *args, **kwargs)
-		instance = Message.objects.get(id = msg.data.get('id'))
+		message = super().create(self, request, *args, **kwargs)
+		instance = Message.objects.get(id = message.data.get('id'))
 		instance.user.pk = self.request.user.pk
 		instance.save()
 		return Response(
 			status = HTTP_201_CREATED,
-			data = MessageSerial(instance=instance, many=False).data
-		)
-
-	def retrive(self, request, *args, **kwargs):
-		msg = super().retrieve(request, *args, **kwargs)
-		instance = Message.objects.get(id=msg.data.get('id'))
-		return Response(
-			status = HTTP_200_OK,
 			data = MessageSerial(instance=instance, many=False).data
 		)
 
